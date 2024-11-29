@@ -37,7 +37,13 @@ def VerificarNota(nota):
             print("La nota del estudiante debe ser un número.")
             nota = input("Ingrese nuevamente la nota: ")
     return nota
-
+#Implemento error en el ingreso de los datos del estudiante
+def VerificarError(error): 
+    while error != "S" and error != "N": 
+        print("La respuesta debe ser S o N.") 
+        error = input("¿Desea repetir la digitación de este estudiante? (S/N): ") 
+        error = error.upper() 
+    return error
 
 #Implementar un función que verique el numero de estudiantes
 #Esto validando casos como cantidad mínima, que sea un numero y que sea un numero entero
@@ -88,11 +94,9 @@ cantidad = input("Ingrese la cantidad de estudiantes: ")
 cantidad = VerificarEstudiantes(cantidad)
 estudiantes = []
 
-#con el bucle for, ingresaremos los datos de los estudiantes numerandolos 1 a 1 y añadiendolos a la lista
-#para hacer bien el programa, podremos una lista para almacenar las notas de cada estudiante
-#Es necesario que notas se defina en el inicio del primer ciclo para cuando almacene los datos no se acumulen los datos
-#Añado el verificador de nombre y apellido
-for i in range(1, cantidad+1):
+#cambiaremos el bucle for por un bucle while con el fin de poder corregir los datos de los estudiantes en caso de error
+i = 1
+while i <= cantidad:
     nombre= input(f"Ingrese el nombre del estudiante {i}: ")
     nombre = VerificarNombre(nombre)
     apellido= input(f"Ingrese el apellido del estudiante {i}: ")
@@ -109,6 +113,15 @@ for i in range(1, cantidad+1):
     estudiantes.append(estudiante)
 
     print(f"Estudiante {i}: {estudiante.nombre}, {estudiante.apellido}, Promedio: {promedio}")
+
+    error = input("¿Desea repetir la digitación de este estudiante? (S/N): ")
+    error = VerificarError(error)
+    if error == "S":
+        estudiantes.pop()
+        continue
+    else:
+        i += 1
+
 
 #lanzo en pantalla la lista de estudiantes ingresados
 print("Tabla de estudiantes")
