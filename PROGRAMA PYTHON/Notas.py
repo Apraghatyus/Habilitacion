@@ -20,7 +20,7 @@ Adicionalmente, se está interasado en analizar los datos de los estudiantes jun
 #serán importados en el programa principal
 
 from classFun import Estudiante, Promedio
-from valida import VerificarNombre, VerificarNota, VerificarError, VerificarEstudiantes
+from valida import VerificarNombre, VerificarNota, Verificarsino, VerificarEstudiantes,  VerificarID
 
 print("Bienvenidos al programa que calcula promedios de estudiantes")
 print("------------------------------------------------------------")
@@ -50,9 +50,9 @@ while i <= cantidad:
 
     print(f"Estudiante {i}: {estudiante.nombre}, {estudiante.apellido}, Promedio: {promedio}")
 
-    error = input("¿Desea repetir la digitación de este estudiante? (S/N): ").upper()
-    error = VerificarError(error)
-    if error == "S":
+    sino = input("¿Desea repetir la digitación de este estudiante? (S/N): ").upper()
+    sino = Verificarsino(sino)
+    if sino == "S":
         estudiantes.pop()
         continue
     else:
@@ -62,6 +62,19 @@ while i <= cantidad:
 print("Tabla de estudiantes")
 for estudiante in estudiantes:
     print(estudiante)
+
+#Se implementa la un bucle para determinar si se desean eliminar estudiantes de la lista a través de su ID.
+#Se presenta un error cuando eliminas toda la lista.
+while True:
+    sino = input("¿Desea eliminar un estudiante? (S/N): ").upper()
+    sino = Verificarsino(sino)
+    if sino == "S":
+        id_deseado = input("Ingrese el ID del estudiante que desea eliminar: ")
+        id_deseado = VerificarID(estudiantes, id_deseado)
+        estudiante_delete = estudiantes.pop(id_deseado-1)
+        print(f"Estudiante eliminado: {estudiante_delete}")
+    else:
+        break
 
 # Calcular el promedio más alto del curso
 promedio_max = max(estudiante.promedio for estudiante in estudiantes)

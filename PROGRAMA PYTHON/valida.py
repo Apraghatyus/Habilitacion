@@ -22,12 +22,12 @@ def VerificarNota(nota):
     return nota
 
 #Digita el valor si el usuario desea corregir el dato.
-def VerificarError(error):
-    while error != "S" and error != "N":
+def Verificarsino(sino):
+    while sino != "S" and sino != "N":
         print("La respuesta debe ser S o N.")
-        error = input("¿Desea repetir la digitación de este estudiante? (S/N): ")
-        error = error.upper()
-    return error
+        sino = input("¿Desea repetir la digitación de este estudiante? (S/N): ")
+        sino = sino.upper()
+    return sino
 
 #Verifica el número inicial de estudiantes.
 def VerificarEstudiantes(cantidad):
@@ -43,3 +43,19 @@ def VerificarEstudiantes(cantidad):
             else:
                 break
     return cantidad
+
+#Verifica que el ID sea un número entero.
+# Verifica que el ID sea un número entero y esté dentro del rango válido de estudiantes
+def VerificarID(estudiantes, id):
+    while True:
+        if not id.isnumeric():
+            print("El ID del estudiante debe ser un número entero.")
+            id = input("Ingrese nuevamente el ID del estudiante: ")
+        else:
+            id = int(id)
+            if id < 1 or id > len(estudiantes):
+                print(f"El ID debe estar dentro del rango de 1 a {len(estudiantes)}.")
+                id = input("Ingrese nuevamente el ID del estudiante: ")
+            else:
+                break
+    return id
