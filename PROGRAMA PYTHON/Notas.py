@@ -30,7 +30,7 @@ datoexistente = Verificarsino(datoexistente)
 if datoexistente == "S":
     estudiantes = []
     estudiantes = leer_csv("curso.csv", estudiantes)
-    
+
 else: 
     cantidad = input("Ingrese la cantidad de estudiantes del curso: ")
     cantidad = VerificarEstudiantes(cantidad)
@@ -89,13 +89,16 @@ for estudiante in estudiantes:
 # Exportar la tabla de estudiantes a un archivo CSV
 exportar_csv("curso.csv", estudiantes)
 
-# Calcular el promedio más alto del curso
-promedio_max = max(estudiante.promedio for estudiante in estudiantes)
-print(f"El promedio más alto del curso es: {promedio_max:.2f}")
+# Calcular el promedio más alto del curso y dice el nombre del estudiante
 
-# Calcular el promedio más bajo del curso
+promedio_max = max(estudiante.promedio for estudiante in estudiantes)
+estudiante_max = max(estudiantes, key=lambda x: x.promedio)
+print(f"El promedio más alto del curso es: {estudiante_max.nombre} {estudiante_max.apellido} con un promedio de {promedio_max:.2f}")
+
+# Calcular el promedio más bajo del curso y dice el nombre del estudiante
 promedio_min = min(estudiante.promedio for estudiante in estudiantes)
-print(f"El promedio más bajo del curso es: {promedio_min:.2f}")
+estudiante_min = min(estudiantes, key=lambda x: x.promedio)
+print(f"El promedio más bajo del curso es: {estudiante_min.nombre} {estudiante_min.apellido} con un promedio de {promedio_min:.2f}")
 
 # Calcular el promedio general del curso
 promedio_general = sum(estudiante.promedio for estudiante in estudiantes) / len(estudiantes)
