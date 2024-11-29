@@ -1,70 +1,75 @@
 '''Sistema de notas en un instituto 
 Este programa realiza el promedio de las notas de los alumnos de un instituto, que estudiante obtuvo el promedio más alto.
-Se propone la construcion de un diccionario llamado estudiantes donde se almacene los datos que tendrán por llave el código del estudiante y una lista de sus atributos
+Se propone la construcción de un diccionario llamado estudiantes donde se almacenen los datos que tendrán por llave el código del estudiante y una lista de sus atributos
     ID Estudiante
     Nombre
     Apellido
     Nota 1
     Nota 2
     Nota 3
-Se solicita un CRUD que contenga las siguientes operaciones, Agregar, Actualizar, borrar y listar los estuadiates.
+Se solicita un CRUD que contenga las siguientes operaciones: Agregar, Actualizar, Borrar y Listar los estudiantes.
 Para actualizar y borrar es necesario especificar todos los atributos del estudiante.
 
-Adicionalmente, se está interasado en analizar los datos de los estudiantes junto con sus notar y conocer:
+Adicionalmente, se está interesado en analizar los datos de los estudiantes junto con sus notas y conocer:
     Promedio para cada estudiante guardado en la base de datos.
     Nombre del estudiante con mayor promedio
     Nombre del estudiante con menor promedio
     Promedio general de todo el curso
- '''
-#Se crea dos documentos más, los cuales tendrán las funciones y las validaciones de los datos ingresados
-#serán importados en el programa principal
-import csv
-from classFun import Estudiante, Promedio
-from valida import VerificarNombre, VerificarNota, Verificarsino, VerificarEstudiantes,  VerificarID
+'''
+
+from classFun import Estudiante, Promedio, leer_csv, exportar_csv
+from valida import VerificarNombre, VerificarNota, Verificarsino, VerificarEstudiantes, VerificarID
 
 print("Bienvenidos al programa que calcula promedios de estudiantes")
 print("------------------------------------------------------------")
 
 # Ingresar la cantidad de estudiantes
-cantidad = input("Ingrese la cantidad de estudiantes: ")
-cantidad = VerificarEstudiantes(cantidad)
-estudiantes = []
+datoexistente = input("¿Desea ingresar leer los datos de un archivo CSV? (S/N): ").upper()
+datoexistente = Verificarsino(datoexistente)
 
-# Cambiar el bucle for por un bucle while con el fin de poder corregir los datos de los estudiantes en caso de error
-i = 1
-while i <= cantidad:
-    nombre = input(f"Ingrese el nombre del estudiante {i}: ")
-    nombre = VerificarNombre(nombre)
-    apellido = input(f"Ingrese el apellido del estudiante {i}: ")
-    apellido = VerificarNombre(apellido)
-    notas = []
+if datoexistente == "S":
+    estudiantes = []
+    estudiantes = leer_csv("curso.csv", estudiantes)
     
-    for j in range(1, 4):
-        nota = input(f"Ingrese la nota número {j} del estudiante {i}: ")
-        nota = VerificarNota(nota)
-        notas.append(nota)
+else: 
+    cantidad = input("Ingrese la cantidad de estudiantes del curso: ")
+    cantidad = VerificarEstudiantes(cantidad)
+    estudiantes = []
 
-    promedio = Promedio(notas[0], notas[1], notas[2])
-    estudiante = Estudiante(i, nombre, apellido, notas[0], notas[1], notas[2], promedio)
-    estudiantes.append(estudiante)
+    i = 1
+    while i <= cantidad:
+        nombre = input(f"Ingrese el nombre del estudiante {i}: ")
+        nombre = VerificarNombre(nombre)
+        apellido = input(f"Ingrese el apellido del estudiante {i}: ")
+        apellido = VerificarNombre(apellido)
+        notas = []
+    
+        for j in range(1, 4):
+            nota = input(f"Ingrese la nota número {j} del estudiante {i}: ")
+            nota = VerificarNota(nota)
+            notas.append(nota)
 
-    print(f"Estudiante {i}: {estudiante.nombre}, {estudiante.apellido}, Promedio: {promedio}")
+        promedio = Promedio(notas[0], notas[1], notas[2])
+        estudiante = Estudiante(i, nombre, apellido, notas[0], notas[1], notas[2], promedio)
+        estudiantes.append(estudiante)
 
-    sino = input("¿Desea repetir la digitación de este estudiante? (S/N): ").upper()
-    sino = Verificarsino(sino)
-    if sino == "S":
-        estudiantes.pop()
-        continue
-    else:
-        i += 1
+        print(f"Estudiante {i}: {estudiante.nombre}, {estudiante.apellido}, Promedio: {promedio}")
+
+        sino = input("¿Desea repetir la digitación de este estudiante? (S/N): ").upper()
+        sino = Verificarsino(sino)
+        if sino == "S":
+            estudiantes.pop()
+            continue
+        else:
+            i += 1
 
 # Lanzar en pantalla la lista de estudiantes ingresados
 print("Tabla de estudiantes")
 for estudiante in estudiantes:
     print(estudiante)
 
-#Se implementa la un bucle para determinar si se desean eliminar estudiantes de la lista a través de su ID.
-#Se presenta un error cuando eliminas toda la lista.
+# Se implementa un bucle para determinar si se desean eliminar estudiantes de la lista a través de su ID.
+# # Se presenta un error cuando eliminas toda la lista.
 while True:
     sino = input("¿Desea eliminar un estudiante? (S/N): ").upper()
     sino = Verificarsino(sino)
@@ -82,13 +87,7 @@ for estudiante in estudiantes:
     print(estudiante)
 
 # Exportar la tabla de estudiantes a un archivo CSV
-with open('curso.csv', 'w', newline='') as file:
-    writer = csv.writer(file)
-    writer.writerow(['ID', 'Nombre', 'Apellido', 'Nota 1', 'Nota 2', 'Nota 3', 'Promedio'])
-    for estudiante in estudiantes:
-        writer.writerow([estudiante.id, estudiante.nombre, estudiante.apellido, estudiante.nota1, estudiante.nota2, estudiante.nota3, estudiante.promedio])
-
-print("Tabla exportada a curso.csv")
+exportar_csv("curso.csv", estudiantes)
 
 # Calcular el promedio más alto del curso
 promedio_max = max(estudiante.promedio for estudiante in estudiantes)
