@@ -18,7 +18,7 @@ Adicionalmente, se está interasado en analizar los datos de los estudiantes jun
  '''
 #Se crea dos documentos más, los cuales tendrán las funciones y las validaciones de los datos ingresados
 #serán importados en el programa principal
-
+import csv
 from classFun import Estudiante, Promedio
 from valida import VerificarNombre, VerificarNota, Verificarsino, VerificarEstudiantes,  VerificarID
 
@@ -80,6 +80,15 @@ while True:
 print("Tabla de estudiantes")
 for estudiante in estudiantes:
     print(estudiante)
+
+# Exportar la tabla de estudiantes a un archivo CSV
+with open('curso.csv', 'w', newline='') as file:
+    writer = csv.writer(file)
+    writer.writerow(['ID', 'Nombre', 'Apellido', 'Nota 1', 'Nota 2', 'Nota 3', 'Promedio'])
+    for estudiante in estudiantes:
+        writer.writerow([estudiante.id, estudiante.nombre, estudiante.apellido, estudiante.nota1, estudiante.nota2, estudiante.nota3, estudiante.promedio])
+
+print("Tabla exportada a curso.csv")
 
 # Calcular el promedio más alto del curso
 promedio_max = max(estudiante.promedio for estudiante in estudiantes)
