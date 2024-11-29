@@ -16,90 +16,26 @@ Adicionalmente, se está interasado en analizar los datos de los estudiantes jun
     Nombre del estudiante con menor promedio
     Promedio general de todo el curso
  '''
-#Implementamos una funcion para verficar el nombre de los estudiantes
-def VerificarNombre(nombre):
-    while not nombre.isalpha():
-        print("El nombre y/o apellido debe contener solo letras")
-        nombre = input("Ingrese nuevamente el dato: ")
-    return nombre
+#Se crea dos documentos más, los cuales tendrán las funciones y las validaciones de los datos ingresados
+#serán importados en el programa principal
 
-#Implementar un función que verique el dato ingresado
-def VerificarNota(nota):
-    while True:
-        try:
-            nota = float(nota)
-            if nota < 1.0 or nota > 5.0:
-                print("La nota debe estar entre 1.0 y 5.0.")
-                nota = input("Ingrese nuevamente la nota: ")
-            else:
-                break
-        except ValueError:
-            print("La nota del estudiante debe ser un número.")
-            nota = input("Ingrese nuevamente la nota: ")
-    return nota
-#Implemento error en el ingreso de los datos del estudiante
-def VerificarError(error): 
-    while error != "S" and error != "N": 
-        print("La respuesta debe ser S o N.") 
-        error = input("¿Desea repetir la digitación de este estudiante? (S/N): ") 
-        error = error.upper() 
-    return error
-
-#Implementar un función que verique el numero de estudiantes
-#Esto validando casos como cantidad mínima, que sea un numero y que sea un numero entero
-def VerificarEstudiantes(cantidad):
-    while True:
-        if not cantidad.isnumeric():
-            print("La cantidad de estudiantes debe ser un número entero.")
-            cantidad = input("Ingrese nuevamente la cantidad de estudiantes: ")
-        else:
-            cantidad = int(cantidad)
-            if cantidad < 1:
-                print("La cantidad de estudiantes debe ser mayor a 0.")
-                cantidad = input("Ingrese nuevamente la cantidad de estudiantes: ")
-            else:
-                break
-    return cantidad
-
-#Esta será la funcion que calcule los promedios
-def Promedio(nota1, nota2, nota3):
-    prom = (nota1 + nota2 + nota3) / 3
-    return round(prom, 2) #redondeo el promedio en 2 digitos
-
-#dejaré mos tanto las funciones como los objetos arriba.
-class Estudiante:
-    def __init__(self, id, nombre, apellido, nota1, nota2, nota3, promedio):	
-        self.id = id
-        self.nombre = nombre
-        self.apellido = apellido
-        self.nota1 = nota1
-        self.nota2 = nota2
-        self.nota3 = nota3
-        self.promedio = promedio
-
-#definimos el metodo str para imprimir los estudiantes en forma de tabla
-    def __str__(self):
-        return f"ID: {self.id}, {self.nombre}, {self.apellido}, N°1: {self.nota1}, N°2: {self.nota2}, N°3: {self.nota3}, Promedio: {self.promedio}"
-
-#Con nuestro objeto Estudiante podemos empezar a ingresar los datos de los estudiantes a través de un bucle
-#Para esto solicitaremos la cantidad de estudiantes en el curso
+from classFun import Estudiante, Promedio
+from valida import VerificarNombre, VerificarNota, VerificarError, VerificarEstudiantes
 
 print("Bienvenidos al programa que calcula promedios de estudiantes")
 print("------------------------------------------------------------")
-#ingresa la variable que contará la cantidad de estudiantes
-#ingresamos una lista vacia para la cantidad de alumnos
-#establecemos un validador para que solo acepte valores numericos
 
+# Ingresar la cantidad de estudiantes
 cantidad = input("Ingrese la cantidad de estudiantes: ")
 cantidad = VerificarEstudiantes(cantidad)
 estudiantes = []
 
-#cambiaremos el bucle for por un bucle while con el fin de poder corregir los datos de los estudiantes en caso de error
+# Cambiar el bucle for por un bucle while con el fin de poder corregir los datos de los estudiantes en caso de error
 i = 1
 while i <= cantidad:
-    nombre= input(f"Ingrese el nombre del estudiante {i}: ")
+    nombre = input(f"Ingrese el nombre del estudiante {i}: ")
     nombre = VerificarNombre(nombre)
-    apellido= input(f"Ingrese el apellido del estudiante {i}: ")
+    apellido = input(f"Ingrese el apellido del estudiante {i}: ")
     apellido = VerificarNombre(apellido)
     notas = []
     
@@ -114,7 +50,7 @@ while i <= cantidad:
 
     print(f"Estudiante {i}: {estudiante.nombre}, {estudiante.apellido}, Promedio: {promedio}")
 
-    error = input("¿Desea repetir la digitación de este estudiante? (S/N): ")
+    error = input("¿Desea repetir la digitación de este estudiante? (S/N): ").upper()
     error = VerificarError(error)
     if error == "S":
         estudiantes.pop()
@@ -122,21 +58,19 @@ while i <= cantidad:
     else:
         i += 1
 
-
-#lanzo en pantalla la lista de estudiantes ingresados
+# Lanzar en pantalla la lista de estudiantes ingresados
 print("Tabla de estudiantes")
 for estudiante in estudiantes:
     print(estudiante)
 
-#Calculamos el promedio mas alto del curso
+# Calcular el promedio más alto del curso
 promedio_max = max(estudiante.promedio for estudiante in estudiantes)
-print(f"El promedio mas alto del curso es: {promedio_max}")
+print(f"El promedio más alto del curso es: {promedio_max:.2f}")
 
-#Calculamos el promedio mas bajo del curso
+# Calcular el promedio más bajo del curso
 promedio_min = min(estudiante.promedio for estudiante in estudiantes)
-print(f"El promedio mas bajo del curso es: {promedio_min}")
+print(f"El promedio más bajo del curso es: {promedio_min:.2f}")
 
-#Calculamos el promedio general del curso
+# Calcular el promedio general del curso
 promedio_general = sum(estudiante.promedio for estudiante in estudiantes) / len(estudiantes)
-print(f"El promedio general del curso es: {promedio_general}")
-
+print(f"El promedio general del curso es: {promedio_general:.2f}")
