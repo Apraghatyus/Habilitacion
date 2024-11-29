@@ -76,6 +76,11 @@ while True:
     else:
         break
 
+# Lanzar la nueva tabla
+print("Tabla de estudiantes")
+for estudiante in estudiantes:
+    print(estudiante)
+
 # Calcular el promedio más alto del curso
 promedio_max = max(estudiante.promedio for estudiante in estudiantes)
 print(f"El promedio más alto del curso es: {promedio_max:.2f}")
