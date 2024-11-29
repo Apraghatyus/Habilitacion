@@ -20,7 +20,7 @@ Adicionalmente, se está interesado en analizar los datos de los estudiantes jun
 from classFun import Estudiante, Promedio, leer_csv, exportar_csv
 from valida import VerificarNombre, VerificarNota, Verificarsino, VerificarEstudiantes, VerificarID
 
-print("Bienvenidos al programa que calcula promedios de estudiantes")
+print("BIENVENIDOS AL PROGRAMA QUE CALCULA PROMEDIOS DE ESTUDIANTES")
 print("------------------------------------------------------------")
 
 # Ingresar la cantidad de estudiantes
