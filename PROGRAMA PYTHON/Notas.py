@@ -16,18 +16,49 @@ Adicionalmente, se está interasado en analizar los datos de los estudiantes jun
     Nombre del estudiante con menor promedio
     Promedio general de todo el curso
  '''
+#Implementamos una funcion para verficar el nombre de los estudiantes
+def VerificarNombre(nombre):
+    while not nombre.isalpha():
+        print("El nombre y/o apellido debe contener solo letras")
+        nombre = input("Ingrese nuevamente el dato: ")
+    return nombre
+
 #Implementar un función que verique el dato ingresado
 def VerificarNota(nota):
-    while nota < 1.0 or nota > 5.0:
-        print("La nota debe estar entre 1.0 y 5.0")
-        nota = float(input("Ingrese nuevamente la nota: "))
+    while True:
+        try:
+            nota = float(nota)
+            if nota < 1.0 or nota > 5.0:
+                print("La nota debe estar entre 1.0 y 5.0.")
+                nota = input("Ingrese nuevamente la nota: ")
+            else:
+                break
+        except ValueError:
+            print("La nota del estudiante debe ser un número.")
+            nota = input("Ingrese nuevamente la nota: ")
     return nota
 
+
+#Implementar un función que verique el numero de estudiantes
+#Esto validando casos como cantidad mínima, que sea un numero y que sea un numero entero
+def VerificarEstudiantes(cantidad):
+    while True:
+        if not cantidad.isnumeric():
+            print("La cantidad de estudiantes debe ser un número entero.")
+            cantidad = input("Ingrese nuevamente la cantidad de estudiantes: ")
+        else:
+            cantidad = int(cantidad)
+            if cantidad < 1:
+                print("La cantidad de estudiantes debe ser mayor a 0.")
+                cantidad = input("Ingrese nuevamente la cantidad de estudiantes: ")
+            else:
+                break
+    return cantidad
 
 #Esta será la funcion que calcule los promedios
 def Promedio(nota1, nota2, nota3):
     prom = (nota1 + nota2 + nota3) / 3
-    return prom
+    return round(prom, 2) #redondeo el promedio en 2 digitos
 
 #dejaré mos tanto las funciones como los objetos arriba.
 class Estudiante:
@@ -42,7 +73,7 @@ class Estudiante:
 
 #definimos el metodo str para imprimir los estudiantes en forma de tabla
     def __str__(self):
-        return f" {self.id}, {self.nombre}, {self.apellido}, {self.nota1}, {self.nota2}, {self.nota3},  {self.promedio}"
+        return f"ID: {self.id}, {self.nombre}, {self.apellido}, N°1: {self.nota1}, N°2: {self.nota2}, N°3: {self.nota3}, Promedio: {self.promedio}"
 
 #Con nuestro objeto Estudiante podemos empezar a ingresar los datos de los estudiantes a través de un bucle
 #Para esto solicitaremos la cantidad de estudiantes en el curso
@@ -51,20 +82,25 @@ print("Bienvenidos al programa que calcula promedios de estudiantes")
 print("------------------------------------------------------------")
 #ingresa la variable que contará la cantidad de estudiantes
 #ingresamos una lista vacia para la cantidad de alumnos
+#establecemos un validador para que solo acepte valores numericos
 
-cantidad = int(input("Ingrese la cantidad de estudiantes: "))
+cantidad = input("Ingrese la cantidad de estudiantes: ")
+cantidad = VerificarEstudiantes(cantidad)
 estudiantes = []
 
 #con el bucle for, ingresaremos los datos de los estudiantes numerandolos 1 a 1 y añadiendolos a la lista
 #para hacer bien el programa, podremos una lista para almacenar las notas de cada estudiante
 #Es necesario que notas se defina en el inicio del primer ciclo para cuando almacene los datos no se acumulen los datos
+#Añado el verificador de nombre y apellido
 for i in range(1, cantidad+1):
     nombre= input(f"Ingrese el nombre del estudiante {i}: ")
+    nombre = VerificarNombre(nombre)
     apellido= input(f"Ingrese el apellido del estudiante {i}: ")
+    apellido = VerificarNombre(apellido)
     notas = []
     
     for j in range(1, 4):
-        nota = float(input(f"Ingrese la nota número {j} del estudiante {i}: "))
+        nota = input(f"Ingrese la nota número {j} del estudiante {i}: ")
         nota = VerificarNota(nota)
         notas.append(nota)
 
@@ -76,9 +112,18 @@ for i in range(1, cantidad+1):
 
 #lanzo en pantalla la lista de estudiantes ingresados
 print("Tabla de estudiantes")
-print("ID\tNombre\tApellido\tNota 1\tNota 2\tNota 3\tPromedio")
 for estudiante in estudiantes:
     print(estudiante)
 
-#Con este tabla se podrá ver el promedio de cada estudiante y el promedio general de todos
+#Calculamos el promedio mas alto del curso
+promedio_max = max(estudiante.promedio for estudiante in estudiantes)
+print(f"El promedio mas alto del curso es: {promedio_max}")
+
+#Calculamos el promedio mas bajo del curso
+promedio_min = min(estudiante.promedio for estudiante in estudiantes)
+print(f"El promedio mas bajo del curso es: {promedio_min}")
+
+#Calculamos el promedio general del curso
+promedio_general = sum(estudiante.promedio for estudiante in estudiantes) / len(estudiantes)
+print(f"El promedio general del curso es: {promedio_general}")
 
