@@ -8,14 +8,19 @@ let Estudiantes = {};
 // Función para agregar o actualizar estudiantes
 function solicitar(idExistente = null) {
     let id = idExistente || prompt("Ingrese el ID del estudiante: ");
-    let nombre = prompt("Ingrese el nombre del estudiante: ");
-    
-    // Verificar nombre
-    while (!validarNombre(nombre)) {
-        nombre = prompt("Nombre inválido. Ingrese el nombre del estudiante: ");
+    while (!validarID(id)) {
+        id = prompt("ID inválido. Ingrese nuevamente el ID del estudiante: ");
     }
-    
+
+    let nombre = prompt("Ingrese el nombre del estudiante: ");
+    while (!validarNombre(nombre)) {
+        nombre = prompt("Nombre inválido.\n  El nombre no puede contener números.\n Ingrese el nombre del estudiante: ");
+    }
     let apellido = prompt("Ingrese el apellido del estudiante: ");
+    while (!validarNombre(apellido)) {
+        apellido = prompt("Apellido inválido.\n El apellido no puede contener números.\n Ingrese el apellido del estudiante: ");
+    }
+
     let nota1 = parseFloat(prompt("Ingrese la nota 1 del estudiante: "));
     while (!validarNota(nota1)) {
         nota1 = parseFloat(prompt("Nota inválida. Ingrese la nota 1 del estudiante: "));
@@ -36,22 +41,14 @@ function solicitar(idExistente = null) {
 }
 
 
-// Exportar las funciones y variables necesarias
-window.Estudiantes = Estudiantes;
-window.solicitar = solicitar;
-window.addstudent = addstudent;
-window.update = update;
-window.deletestudent = deletestudent;
-window.listar = listar;
-window.menu = menu;
-
-
 // Función para agregar estudiantes
 function addstudent(id, nombre, apellido, nota1, nota2, nota3) {
     Estudiantes[id] = {
         nombre: nombre,
         apellido: apellido,
-        notas: [nota1, nota2, nota3]
+        notas1: nota1,
+        nota2: nota2,
+        nota3: nota3
     };
 }
 
@@ -69,7 +66,7 @@ function update() {
 function deletestudent() {
     let id = prompt("Ingrese el ID del estudiante que desea eliminar: ");
     if (Estudiantes[id]) {
-        delete estudiantes[id];
+        delete Estudiantes[id];
         console.log("Estudiante eliminado correctamente");
     } else {
         console.log("Estudiante no encontrado");
@@ -78,6 +75,8 @@ function deletestudent() {
 
 // Función para listar estudiantes
 function listar() {
+    console.log("listado de estudiantes del curso");
+    console.log("la cantidad de estudiantes es: " + Object.keys(Estudiantes).length);
     console.log(Estudiantes);
 }
 
@@ -105,3 +104,12 @@ function menu() {
     }
     menu(); // Llamar nuevamente al menú para permitir más acciones
 }
+
+// Exportar las funciones y variables necesarias
+window.Estudiantes = Estudiantes;
+window.solicitar = solicitar;
+window.addstudent = addstudent;
+window.update = update;
+window.deletestudent = deletestudent;
+window.listar = listar;
+window.menu = menu;
